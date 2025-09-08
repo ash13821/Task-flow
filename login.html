@@ -6,7 +6,6 @@
     <title>TaskFlow - Sign In</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* Use the same CSS variables and base styles from styles.css */
         * {
             margin: 0;
             padding: 0;
@@ -148,6 +147,10 @@
             font-size: 0.9rem;
         }
 
+        .input-wrapper {
+            position: relative;
+        }
+
         .form-input {
             width: 100%;
             padding: 1.2rem 1.5rem;
@@ -159,6 +162,10 @@
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(15px);
+        }
+
+        .form-input.has-icon {
+            padding-right: 3.5rem;
         }
 
         .form-input:focus {
@@ -173,6 +180,90 @@
             color: var(--warm-gray);
         }
 
+        .form-input.error {
+            border-color: var(--crimson-red);
+            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.2);
+            background: rgba(193, 18, 31, 0.05);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--warm-gray);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .input-icon:hover {
+            color: var(--gold-amber);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .custom-checkbox input {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .checkbox-visual {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--glass-border);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-checkbox input:checked + .checkbox-visual {
+            background: var(--gold-amber);
+            border-color: var(--gold-amber);
+        }
+
+        .checkbox-visual::after {
+            content: '✓';
+            color: var(--charcoal-black);
+            font-weight: bold;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .custom-checkbox input:checked + .checkbox-visual::after {
+            opacity: 1;
+        }
+
+        .checkbox-label {
+            color: var(--warm-gray);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .forgot-password-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
         .auth-btn {
             width: 100%;
             padding: 1.3rem;
@@ -184,6 +275,13 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .auth-btn.primary {
@@ -192,7 +290,7 @@
             box-shadow: var(--glow-crimson);
         }
 
-        .auth-btn.primary:hover {
+        .auth-btn.primary:hover:not(:disabled) {
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 15px 35px rgba(193, 18, 31, 0.4);
         }
@@ -204,10 +302,51 @@
             backdrop-filter: blur(15px);
         }
 
-        .auth-btn.secondary:hover {
+        .auth-btn.secondary:hover:not(:disabled) {
             border-color: var(--gold-amber);
             background: var(--glass-hover);
             transform: translateY(-2px);
+        }
+
+        .auth-btn.locked {
+            background: linear-gradient(135deg, var(--warm-gray), var(--deep-slate));
+            color: var(--off-white);
+        }
+
+        .loading {
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.1), 
+                transparent
+            );
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .auth-link {
+            color: var(--gold-amber);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .auth-link:hover {
+            color: var(--crimson-red);
         }
 
         .auth-divider {
@@ -230,6 +369,35 @@
             padding: 0 1rem;
         }
 
+        .social-login-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--off-white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            border-color: var(--gold-amber);
+            background: var(--glass-hover);
+            transform: translateY(-2px);
+        }
+
         .auth-footer {
             text-align: center;
             margin-top: 2rem;
@@ -240,17 +408,6 @@
         .auth-footer p {
             color: var(--warm-gray);
             margin-bottom: 1rem;
-        }
-
-        .auth-link {
-            color: var(--gold-amber);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .auth-link:hover {
-            color: var(--crimson-red);
         }
 
         .notification {
@@ -278,6 +435,97 @@
         .notification.info { background: var(--royal-blue); }
         .notification.warning { background: var(--gold-amber); color: var(--charcoal-black); }
 
+        .validation-error {
+            color: var(--crimson-red);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .lockout-info {
+            background: rgba(193, 18, 31, 0.1);
+            border: 1px solid var(--crimson-red);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--crimson-red);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .password-reset-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-premium);
+            color: var(--off-white);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-amber);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--warm-gray);
+            font-size: 0.9rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.primary {
+            background: var(--crimson-red);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--off-white);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .auth-container {
                 margin: 1rem;
@@ -288,6 +536,10 @@
                 font-size: 1.8rem;
             }
 
+            .social-login-container {
+                flex-direction: column;
+            }
+
             .notification {
                 left: 10px;
                 right: 10px;
@@ -296,6 +548,20 @@
 
             .notification.show {
                 transform: translateY(0);
+            }
+
+            .forgot-password-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -314,19 +580,42 @@
             <p class="auth-subtitle">Sign in to continue your productivity journey</p>
         </div>
 
+        <!-- Account Lockout Warning -->
+        <div class="lockout-info" id="lockoutWarning" style="display: none;">
+            <strong>Account Temporarily Locked</strong><br>
+            Too many failed attempts. Please try again in <span id="lockoutTimer"></span> seconds.
+        </div>
+
         <form id="loginForm">
             <div class="form-group">
                 <label class="form-label" for="email">Email Address</label>
                 <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                <div class="validation-error" id="emailError"></div>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="password">Password</label>
-                <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                <div class="input-wrapper">
+                    <input type="password" id="password" class="form-input has-icon" placeholder="Enter your password" required>
+                    <span class="input-icon" id="passwordToggle">👁️</span>
+                </div>
+                <div class="validation-error" id="passwordError"></div>
             </div>
 
-            <button type="submit" class="auth-btn primary">
-                🎯 Sign In & Start Conquering
+            <div class="forgot-password-row">
+                <div class="checkbox-group">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="rememberMe">
+                        <div class="checkbox-visual"></div>
+                    </div>
+                    <label class="checkbox-label" for="rememberMe">Remember me</label>
+                </div>
+                
+                <a href="#" class="auth-link" onclick="showForgotPassword()">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="auth-btn primary" id="loginBtn">
+                Sign In & Start Conquering
             </button>
         </form>
 
@@ -334,17 +623,76 @@
             <span>or</span>
         </div>
 
+        <div class="social-login-container">
+            <button class="social-btn" onclick="loginWithGoogle()">
+                Google
+            </button>
+            <button class="social-btn" onclick="loginWithFacebook()">
+                Facebook
+            </button>
+        </div>
+
         <button class="auth-btn secondary" onclick="continueAsGuest()">
-            🎮 Continue as Guest Explorer
+            Continue as Guest Explorer
         </button>
 
         <div class="auth-footer">
             <p>New to TaskFlow?</p>
             <a href="signup.html" class="auth-link">Create your productivity account</a>
+            <br><br>
+            <button onclick="createTestAccount()" style="
+                background: rgba(212, 175, 55, 0.1);
+                border: 1px solid var(--gold-amber);
+                color: var(--gold-amber);
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+            ">Create Test Account (Debug)</button>
         </div>
     </div>
 
     <script>
+        // State management - use variables instead of localStorage
+        let credentials = [
+            {
+                userId: 'test_user_001', 
+                email: 'test@example.com',
+                passwordHash: hashPassword('test123'),
+                name: 'Test User',
+                createdAt: new Date().toISOString(),
+                onboardingCompleted: false,
+                preferences: {}
+            }
+        ];
+        
+        let loginAttempts = 0;
+        let maxAttempts = 3;
+        let lockoutDuration = 300; // 5 minutes in seconds
+        let lockoutEnd = 0;
+        let currentUser = null;
+        let currentSession = null;
+
+        // Enhanced password hashing
+        function hashPassword(password, salt = 'taskflow_salt_2024') {
+            let hash = 0;
+            const data = password + salt;
+            for (let i = 0; i < data.length; i++) {
+                const char = data.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(16).padStart(8, '0');
+        }
+
+        function generateAuthToken(userId) {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substr(2, 9);
+            const sessionId = Math.random().toString(36).substr(2, 15);
+            return `tf_${userId}_${timestamp}_${random}_${sessionId}`;
+        }
+
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -359,67 +707,396 @@
             setTimeout(() => {
                 notification.classList.remove('show');
                 setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            }, 4000);
+        }
+
+        function showError(inputId, message) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById(inputId + 'Error');
+            
+            input.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearError(inputId) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById(inputId + 'Error');
+            
+            input.classList.remove('error');
+            errorDiv.style.display = 'none';
+        }
+
+        function clearAllErrors() {
+            ['email', 'password'].forEach(clearError);
+        }
+
+        function isLockedOut() {
+            return Date.now() < lockoutEnd;
+        }
+
+        function updateLockoutUI() {
+            const warning = document.getElementById('lockoutWarning');
+            const timer = document.getElementById('lockoutTimer');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (isLockedOut()) {
+                const remainingSeconds = Math.ceil((lockoutEnd - Date.now()) / 1000);
+                warning.style.display = 'block';
+                timer.textContent = remainingSeconds;
+                loginBtn.disabled = true;
+                loginBtn.classList.add('locked');
+                loginBtn.textContent = 'Account Locked';
+                
+                setTimeout(updateLockoutUI, 1000);
+            } else {
+                warning.style.display = 'none';
+                loginBtn.disabled = false;
+                loginBtn.classList.remove('locked');
+                loginBtn.textContent = 'Sign In & Start Conquering';
+                loginAttempts = 0;
+            }
+        }
+
+        function authenticateUser(email, password) {
+            const hashedPassword = hashPassword(password);
+            const user = credentials.find(cred => 
+                cred.email === email.toLowerCase() && 
+                cred.passwordHash === hashedPassword
+            );
+            return user;
+        }
+
+        function createUserSession(userData, rememberMe = false) {
+            const authToken = generateAuthToken(userData.userId);
+            const expirationHours = rememberMe ? 24 * 30 : 24; // 30 days vs 1 day
+            const expirationTime = new Date(Date.now() + expirationHours * 60 * 60 * 1000);
+            
+            currentSession = {
+                token: authToken,
+                userId: userData.userId,
+                email: userData.email,
+                createdAt: new Date().toISOString(),
+                expiresAt: expirationTime.toISOString(),
+                rememberMe: rememberMe,
+                lastActivity: new Date().toISOString()
+            };
+
+            currentUser = {
+                id: userData.userId,
+                name: userData.name || userData.email.split('@')[0],
+                email: userData.email,
+                isAuthenticated: true,
+                isGuest: false,
+                onboardingCompleted: userData.onboardingCompleted || false,
+                preferences: userData.preferences || {},
+                loginHistory: userData.loginHistory || [],
+                createdAt: userData.createdAt || new Date().toISOString()
+            };
+
+            // Add login to history
+            currentUser.loginHistory.push({
+                timestamp: new Date().toISOString(),
+                type: 'login',
+                rememberMe: rememberMe,
+                userAgent: navigator.userAgent.substring(0, 100)
+            });
+            
+            console.log('User session created:', { 
+                userId: currentUser.id, 
+                rememberMe, 
+                expiresAt: currentSession.expiresAt 
+            });
+            
+            return { userProfile: currentUser, sessionData: currentSession };
+        }
+
+        function redirectToApp(userData) {
+            const welcomeMessage = `Welcome back, ${userData.name}!`;
+            
+            showNotification(welcomeMessage, 'success');
+            
+            // Add some visual feedback before redirect
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.textContent = 'Launching TaskFlow...';
+            loginBtn.style.background = 'linear-gradient(135deg, var(--emerald-green), var(--gold-amber))';
+            
+            // Simulate redirect to dashboard
+            setTimeout(() => {
+                showNotification('Successfully logged in! (This would redirect to your dashboard)', 'success');
+                console.log('Redirect to dashboard:', userData);
+            }, 1500);
         }
 
         function continueAsGuest() {
-            localStorage.setItem('taskflow_guest_mode', 'true');
-            localStorage.removeItem('taskflow_user');
-            localStorage.removeItem('taskflow_auth_token');
+            const guestData = {
+                id: 'guest_' + Date.now(),
+                name: 'Guest Explorer',
+                email: null,
+                isAuthenticated: true,
+                isGuest: true,
+                onboardingCompleted: false,
+                sessionStarted: new Date().toISOString()
+            };
             
-            showNotification('Welcome, Guest Explorer! 🚀', 'success');
+            const authToken = generateAuthToken(guestData.id);
+            currentSession = {
+                token: authToken,
+                userId: guestData.id,
+                createdAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(), // 4 hours for guests
+                isGuest: true,
+                rememberMe: false
+            };
             
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
+            currentUser = guestData;
+            
+            redirectToApp(guestData);
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function createTestAccount() {
+            const testEmail = `test${Date.now()}@example.com`;
+            const testPassword = 'test123';
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const newUser = {
+                userId: `test_${Date.now()}`,
+                email: testEmail,
+                passwordHash: hashPassword(testPassword),
+                name: 'Test User ' + Date.now(),
+                createdAt: new Date().toISOString(),
+                onboardingCompleted: false,
+                preferences: {}
+            };
             
-            if (!email || !password) {
-                showNotification('Please fill in all fields!', 'warning');
+            credentials.push(newUser);
+            
+            showNotification(`Test account created! Email: ${testEmail}, Password: ${testPassword}`, 'success');
+            
+            // Pre-fill the form with new credentials
+            document.getElementById('email').value = testEmail;
+            document.getElementById('password').value = testPassword;
+        }
+
+        function showPasswordResetForm(resetData) {
+            const modal = document.createElement('div');
+            modal.className = 'password-reset-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Reset Password</h2>
+                        <p class="modal-subtitle">Enter your new password for ${resetData.email}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="newPassword" class="form-input" placeholder="Enter new password" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password" minlength="6">
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="modal-btn secondary" onclick="closePasswordResetForm()">Cancel</button>
+                        <button class="modal-btn primary" onclick="resetPassword('${resetData.email}', '${resetData.token}')">Reset Password</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function closePasswordResetForm() {
+            const modal = document.querySelector('.password-reset-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function resetPassword(email, token) {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!newPassword || newPassword.length < 6) {
+                showNotification('Password must be at least 6 characters long', 'error');
                 return;
             }
             
-            // Simulate login process
-            showNotification('Signing you in...', 'info');
-            
-            // Mock authentication - in real app, this would call your backend
-            setTimeout(() => {
-                const userData = {
-                    name: email.split('@')[0],
-                    email: email,
-                    isAuthenticated: true,
-                    onboardingCompleted: true // Skip onboarding for returning users
-                };
-                
-                localStorage.setItem('taskflow_user', JSON.stringify(userData));
-                localStorage.setItem('taskflow_auth_token', 'mock_token_' + Date.now());
-                localStorage.removeItem('taskflow_guest_mode');
-                
-                showNotification('Welcome back to TaskFlow! 🎉', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-            }, 1500);
-        });
-
-        // Check if already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            const user = JSON.parse(localStorage.getItem('taskflow_user') || '{}');
-            const authToken = localStorage.getItem('taskflow_auth_token');
-            
-            if (authToken && user.isAuthenticated) {
-                showNotification('You are already signed in! Redirecting...', 'info');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
+            if (newPassword !== confirmPassword) {
+                showNotification('Passwords do not match', 'error');
+                return;
             }
+            
+            // Find and update user password
+            const userIndex = credentials.findIndex(cred => cred.email === email.toLowerCase());
+            if (userIndex !== -1) {
+                credentials[userIndex].passwordHash = hashPassword(newPassword);
+                showNotification('Password reset successfully! You can now sign in with your new password.', 'success');
+                closePasswordResetForm();
+                
+                // Pre-fill email field
+                document.getElementById('email').value = email;
+                document.getElementById('password').focus();
+            } else {
+                showNotification('Account not found', 'error');
+            }
+        }
+
+        function showForgotPassword() {
+            const email = document.getElementById('email').value.trim();
+            
+            if (!email) {
+                showNotification('Please enter your email address first', 'warning');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                showNotification('Please enter a valid email address', 'warning');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            // Check if email exists in our system
+            const userExists = credentials.some(cred => cred.email === email.toLowerCase());
+            
+            if (!userExists) {
+                showNotification('No account found with this email address', 'error');
+                return;
+            }
+            
+            // Generate password reset token
+            const resetToken = Math.random().toString(36).substr(2, 15) + Date.now().toString(36);
+            const resetData = {
+                email: email.toLowerCase(),
+                token: resetToken,
+                expires: Date.now() + (15 * 60 * 1000), // 15 minutes
+                createdAt: new Date().toISOString()
+            };
+            
+            // Simulate email sending
+            showNotification('Password reset link sent to your email!', 'success');
+            
+            // For demo purposes, show the reset option after a delay
+            setTimeout(() => {
+                const resetConfirm = confirm(
+                    `Password reset initiated for ${email}.\n\n` +
+                    `In a real app, you'd receive an email with a reset link.\n\n` +
+                    `For demonstration: Would you like to reset your password now?`
+                );
+                
+                if (resetConfirm) {
+                    showPasswordResetForm(resetData);
+                }
+            }, 2000);
+        }
+
+        function loginWithGoogle() {
+            showNotification('Google login would be implemented here', 'info');
+            // In a real app, this would redirect to Google OAuth
+        }
+
+        function loginWithFacebook() {
+            showNotification('Facebook login would be implemented here', 'info');
+            // In a real app, this would redirect to Facebook OAuth
+        }
+
+        // Password visibility toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('password');
+            
+            passwordToggle.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.textContent = '🙈';
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.textContent = '👁️';
+                }
+            });
+
+            // Form submission handler
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (isLockedOut()) {
+                    showNotification('Account is temporarily locked. Please wait.', 'error');
+                    return;
+                }
+                
+                clearAllErrors();
+                
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+                
+                // Validation
+                if (!email) {
+                    showError('email', 'Email is required');
+                    return;
+                }
+                
+                if (!/\S+@\S+\.\S+/.test(email)) {
+                    showError('email', 'Please enter a valid email address');
+                    return;
+                }
+                
+                if (!password) {
+                    showError('password', 'Password is required');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showError('password', 'Password must be at least 6 characters');
+                    return;
+                }
+                
+                // Show loading state
+                const loginBtn = document.getElementById('loginBtn');
+                const originalText = loginBtn.textContent;
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Signing In...';
+                
+                // Simulate API delay
+                setTimeout(() => {
+                    const user = authenticateUser(email, password);
+                    
+                    if (user) {
+                        // Success
+                        loginAttempts = 0;
+                        const { userProfile } = createUserSession(user, rememberMe);
+                        redirectToApp(userProfile);
+                    } else {
+                        // Failed login
+                        loginAttempts++;
+                        
+                        if (loginAttempts >= maxAttempts) {
+                            lockoutEnd = Date.now() + (lockoutDuration * 1000);
+                            showNotification('Too many failed attempts. Account temporarily locked.', 'error');
+                            updateLockoutUI();
+                        } else {
+                            const remainingAttempts = maxAttempts - loginAttempts;
+                            showNotification(`Invalid email or password. ${remainingAttempts} attempts remaining.`, 'error');
+                            showError('password', 'Invalid credentials');
+                        }
+                        
+                        // Reset button state
+                        loginBtn.classList.remove('loading');
+                        loginBtn.disabled = false;
+                        loginBtn.textContent = originalText;
+                    }
+                }, 1500);
+            });
+
+            // Clear errors on input
+            ['email', 'password'].forEach(inputId => {
+                document.getElementById(inputId).addEventListener('input', () => {
+                    clearError(inputId);
+                });
+            });
+
+            // Initialize lockout check
+            updateLockoutUI();
         });
     </script>
 </body>
